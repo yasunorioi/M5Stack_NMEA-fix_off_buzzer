@@ -26,6 +26,9 @@ void setup() {
   M5.Lcd.setCursor(0,0);
   M5.Lcd.setTextColor(WHITE);
   
+  M5.Power.begin();
+  M5.Speaker.begin();
+  M5.Speaker.setVolume(3);
 }
 
 void loop() {
@@ -72,9 +75,11 @@ void loop() {
           break;
           }
           if (sw == 4){
-            ledcWrite(ledChannel,0);
+           // ledcWrite(ledChannel,0);
+            M5.Speaker.mute();
           } else {
-            ledcWrite(ledChannel,512);
+           // ledcWrite(ledChannel,512);
+            M5.Speaker.beep(); 
           }
           if (old_status != sw){
             M5.Lcd.fillScreen(BLACK);
@@ -84,6 +89,12 @@ void loop() {
           M5.Lcd.println(status);
           Serial.println(list[6]);
           old_status = sw;
+      } else {
+        
+        M5.Lcd.setCursor(0,0);
+        M5.Lcd.println("NO POS");
+        //ledcWrite(ledChannel,512);
+        M5.Speaker.mute();
       }
     }
     if (list[0] == "$GPRMC" || list[0] =="$GNRMC"){
